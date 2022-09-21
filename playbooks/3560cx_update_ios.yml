@@ -35,16 +35,17 @@
         register: md5_result
         vars:
           ansible_command_timeout: 300
+      - debug:
+          var: md5_result.stdout[0]
 
       - name: CONTINUE UPGRADE IF MD5 HASH MATCHES
         block:
         - name: SETTING BOOT IMAGE
-          ios_config:
+          cisco.ios.ios_config:
             lines:
-            - no boot system
             - boot system flash:{{ new_ios_bin }}
             match: none
-            save_when: always
+            save_when: modified
 
         - name: REBOOT SWITCH IF INSTRUCTED
           block:
@@ -52,7 +53,7 @@
             ios_command:
                commands:
                   - command: "reload"
-                    prompt: '[confirm]'
+                    prompt: '\[confirm]\'
                     answer: "\n"
             vars:
               ansible_command_timeout: 30
