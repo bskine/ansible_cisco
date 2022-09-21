@@ -1,0 +1,14 @@
+---
+- name: 3560CX IOS UPGRADE TO 15.2.7(E6)
+  hosts: test_switch
+  connection: network_cli
+  gather_facts: no
+
+  tasks:
+    - name: GATHER SWITCH FACTS
+      ios_facts:
+
+    - name: STARTING FACTS
+      copy:
+        content: "{{ ansible_facts | to_nice_yaml }}"
+        dest: "{{ inventory_hostname }}_starting_facts"
