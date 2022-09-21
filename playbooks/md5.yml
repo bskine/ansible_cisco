@@ -5,7 +5,6 @@
   gather_facts: no
 
   vars:
-    - compliant_ios_version: c3560cx-universalk9-mz.152-7.E6.bin
     - new_ios_bin: c3560cx-universalk9-mz.152-7.E6.bin
     - new_ios_md5: 1d3c6f78f7df594ae4bdd9faa16ee6de
 
@@ -17,12 +16,11 @@
       ios_command:
         commands:
           - command: "verify /md5 flash:{{ new_ios_bin }}"
-        register: md5_result
-        vars:
-          ansible_command_timeout: 300
+      register: md5_result
+      vars:
+        ansible_command_timeout: 300
     - debug:
-        msg: md5_result.stdout[0]
-      when: {{ new_ios_md5 }} in md5_result.stdout[0]
+        msg: "{{ md5_result.stdout[0] }}"
 
 
 #      - name: CONTINUE UPGRADE IF MD5 HASH MATCHES
