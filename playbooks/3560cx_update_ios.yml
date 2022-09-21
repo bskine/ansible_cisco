@@ -13,6 +13,10 @@
      prompt: "Do you want Ansible to reboot the hosts?(y/n)"
      private: no
 
+  tasks:
+    - name: GATHER SWITCH FACTS
+      ios_facts:
+
     - name: UPGRADE IOS IMAGE IF NOT COMPLIANT
       block:
       - name: COPY OVER IOS IMAGE
