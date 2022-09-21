@@ -17,7 +17,7 @@
     - name: GATHER SWITCH FACTS
       ios_facts:
 
-    - name: UPGRADE IOS IMAGE IF NOT COMPLIANT
+    - name: TFTP IMAGE
       block:
       - name: COPY OVER IOS IMAGE
         ios_command:
@@ -36,7 +36,7 @@
         vars:
           ansible_command_timeout: 300
       - debug:
-          var: md5_result.stdout[0]
+          msg: md5_result.stdout[0]
 
       - name: CONTINUE UPGRADE IF MD5 HASH MATCHES
         block:
@@ -74,10 +74,8 @@
               that:
                 - compliant_ios_version == ansible_net_version
               msg: "IOS version does not match compliant version. Upgrade unsuccessful."
-
           when: should_reboot == "YES"
-
-        when: '"new_ios_md5" in md5_result.stdout[0]'
+        when: {{ new_ios_md5 }} in md5_result.stdout[0]
 
       when: ansible_net_version != compliant_ios_version
 ...
