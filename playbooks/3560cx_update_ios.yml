@@ -75,7 +75,7 @@
               that:
                 - compliant_ios_version == ansible_net_version
               msg: "IOS version does not match compliant version. Upgrade unsuccessful."
-          when: should_reboot == "YES"
+          when: should_reboot == "y"
         when: {{ new_ios_md5 }} in md5_result.stdout[0]
 
       when: ansible_net_version != compliant_ios_version

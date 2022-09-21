@@ -1,0 +1,22 @@
+---
+- name: SET BOOT VARIABLE
+  hosts: test_switch
+  connection: network_cli
+  gather_facts: no
+
+  vars:
+    - new_ios_bin: c3560cx-universalk9-mz.152-7.E6.bin
+
+  tasks:
+    - name: ISSUE CONFIGURATION COMMANDS
+      cisco.ios.ios_config:
+        lines: boot system flash:{{ new_ios_bin }}
+        match: none
+      register: output
+    - debug:
+        var: output
+
+    - name: SAVE IF MODIFIED
+      cisco.ios.ios_config:
+        save_when: modified
+
