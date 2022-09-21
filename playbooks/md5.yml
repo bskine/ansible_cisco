@@ -1,0 +1,34 @@
+---
+- name: TESTING MD5 COMPARISON OPERATOR
+  hosts: test_switch
+  connection: network_cli
+  gather_facts: no
+
+  vars:
+    - compliant_ios_version: c3560cx-universalk9-mz.152-7.E6.bin
+    - new_ios_bin: c3560cx-universalk9-mz.152-7.E6.bin
+    - new_ios_md5: 1d3c6f78f7df594ae4bdd9faa16ee6de
+
+  tasks:
+    - name: GATHER SWITCH FACTS
+      ios_facts:
+
+    - name: VERIFY MD5
+      ios_command:
+        commands:
+          - command: "verify /md5 flash:{{ new_ios_bin }}"
+        register: md5_result
+        vars:
+          ansible_command_timeout: 300
+    - debug:
+        msg: md5_result.stdout[0]
+      when: {{ new_ios_md5 }} in md5_result.stdout[0]
+
+#      - name: CONTINUE UPGRADE IF MD5 HASH MATCHES
+#          block:
+#          - name: SETTING BOOT IMAGE
+#            cisco.ios.ios_config:
+#              lines:
+#              - boot system flash:{{ new_ios_bin }}
+#              match: none
+#              0save_when: modified
