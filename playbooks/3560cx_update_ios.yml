@@ -28,15 +28,16 @@
         vars:
           ansible_command_timeout: 600
 
-      - name: CHECK MD5 HASH
+      - name: VERIFY MD5
         ios_command:
-           commands:
-              - command: "verify /md5 flash:{{ new_ios_bin }}"
-        register: md5_result
+          commands:
+            - "verify /md5 flash:{{ new_ios_bin }}"
+          wait_for: result[0] contains "{{ new_ios_md5 }}"
+          retries: 1
         vars:
-          ansible_command_timeout: 300
+          ansible_command_timeout: 140
       - debug:
-          msg: md5_result.stdout[0]
+          msg: "Md5 Verified!"
 
       - name: CONTINUE UPGRADE IF MD5 HASH MATCHES
         block:

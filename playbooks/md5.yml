@@ -17,13 +17,11 @@
         commands:
           - "verify /md5 flash:{{ new_ios_bin }}"
         wait_for: result[0] contains "{{ new_ios_md5 }}"
-      register: md5_result
+        retries: 1
       vars:
         ansible_command_timeout: 140
     - debug:
-        var: md5_result.stdout[-32:]
-    - debug:
-        msg: "Md5 result is {{ md5_result.stdout[0][-32:] }}, compared to accepted {{new_ios_md5 }}"
+        msg: "Md5 Verified!"
 
 
 #      - name: CONTINUE UPGRADE IF MD5 HASH MATCHES
