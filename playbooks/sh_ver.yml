@@ -1,0 +1,16 @@
+---
+
+  - name: show model/version/neighbors
+    hosts: rig_switches
+    connection: network_cli
+    gather_facts: no
+
+    tasks:
+
+      - name: gather facts
+        ios_facts:
+          gather_subset: all
+
+      - name: Return model and ios version info
+        debug:
+          msg: "Model: {{ ansible_net_model }}, Version: {{ ansible_net_version }}"
