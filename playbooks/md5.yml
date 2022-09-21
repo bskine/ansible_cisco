@@ -24,6 +24,7 @@
         msg: md5_result.stdout[0]
       when: {{ new_ios_md5 }} in md5_result.stdout[0]
 
+
 #      - name: CONTINUE UPGRADE IF MD5 HASH MATCHES
 #          block:
 #          - name: SETTING BOOT IMAGE
