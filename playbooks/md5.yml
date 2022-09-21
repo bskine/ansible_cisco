@@ -9,18 +9,21 @@
     - new_ios_md5: 1d3c6f78f7df594ae4bdd9faa16ee6de
 
   tasks:
-    - name: GATHER SWITCH FACTS
-      ios_facts:
+#    - name: GATHER SWITCH FACTS
+#      ios_facts:
 
     - name: VERIFY MD5
       ios_command:
         commands:
-          - command: "verify /md5 flash:{{ new_ios_bin }}"
+          - "verify /md5 flash:{{ new_ios_bin }}"
+        wait_for: result[0] contains "{{ new_ios_md5 }}"
       register: md5_result
       vars:
-        ansible_command_timeout: 300
+        ansible_command_timeout: 140
     - debug:
-        msg: "{{ md5_result.stdout[0] }}"
+        var: md5_result.stdout[0]
+    - debug:
+        msg: "Md5 result is {{ md5_result.stdout[0] }}, compared to accepted {{new_ios_md5 }}"
 
 
 #      - name: CONTINUE UPGRADE IF MD5 HASH MATCHES
