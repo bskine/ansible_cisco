@@ -7,5 +7,3 @@ ansible_password: "{{ vault_ansible_password }}"
 
 tacacs_key: "{{ vault_tacacs_key }}"
 
----
-vault_ansible_password: Hatcher113

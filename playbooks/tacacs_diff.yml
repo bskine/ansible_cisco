@@ -11,29 +11,37 @@
     - tac2_ip: 158.139.170.16
     - tac3_name: CQ9ISETACPSN
     - tac3_ip: 155.191.182.137
+    - tacacs_key: "{{ vault_tacacs_key }}"
       
   tasks:
-    - name: CONFIGURE TACACS SERVER {{ tac1_name }}
+    - name: REMOVE LEGACY TACACS COMMAND
+      ios_config:
+        lines:
+          - no tacacs-server host 10.26.60.20
+          - no tacacs-server host 158.139.170.16
+          - no tacacs-server host 155.191.182.137
+        save_when: modified
+    - name: CONFIGURE TACACS SERVER-1
       ios_config:
         lines:
           - address ipv4 {{ tac1_ip }}
-          - key {{ tac1_key }}
+          - key {{ tacacs_key }}
         parents: tacacs server {{ tac1_name }}
         match: line
         save_when: modified
-    - name: CONFIGURE TACACS SERVER {{ tac2_name }}
+    - name: CONFIGURE TACACS SERVER-2
       ios_config:
         lines:
           - address ipv4 {{ tac2_ip }}
-          - key {{ tac2_key }}
+          - key {{ tacacs_key }}
         parents: tacacs server {{ tac2_name }}
         match: line
         save_when: modified
-    - name: CONFIGURE TACACS SERVER {{ tac3_name }}
+    - name: CONFIGURE TACACS SERVER-3
       ios_config:
         lines:
           - address ipv4 {{ tac3_ip }}
-          - key {{ tac3_key }}
+          - key {{ tacacs_key }}
         parents: tacacs server {{ tac3_name }}
         match: line
         save_when: modified
