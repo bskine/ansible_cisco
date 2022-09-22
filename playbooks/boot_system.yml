@@ -8,10 +8,10 @@
     - new_ios_bin: c3560cx-universalk9-mz.152-7.E6.bin
 
   tasks:
-    - name: ISSUE CONFIGURATION COMMANDS
+    - name: SETTING BOOT IMAGE
       cisco.ios.ios_config:
         lines: boot system flash:{{ new_ios_bin }}
-        match: none
+        match: line
       register: output
     - debug:
         var: output
