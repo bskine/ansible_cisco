@@ -1,10 +1,10 @@
 [hosts:children]
 switches
 routers
-testing
 
-[test_switch:children]
-# testing
+
+[test_switches:children]
+testing
 
 [routers:children]
 e6_routers
