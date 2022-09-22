@@ -10,8 +10,6 @@
         gather_subset:
           - '!config'
           - '!hardware'
-
-    - name: Return model and ios version info
       debug:
         msg: "Host: {{ ansible_net_hostname }}, Version: {{ ansible_net_version }}, IP: {{ ansible_net_all_ipv4_addresses }}"
 
