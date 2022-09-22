@@ -20,3 +20,5 @@
       cisco.ios.ios_config:
         save_when: modified
 
+# TODO move save_when into - name: SETTING BOOT IMAGE
+# TODO match: line or none

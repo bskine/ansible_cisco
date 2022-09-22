@@ -1,5 +1,5 @@
 ---
-- name: ADD NEW-STYLE TACACS CONFIGURATION
+- name: UPDATE TO NEW-STYLE TACACS CONFIGURATION
   hosts: test_switches
   connection: network_cli
   gather_facts: no
@@ -20,7 +20,15 @@
         39616165623735666435646139323735623438643165353263386633306338373238
 
   tasks:
-    - debug:
+    - name: GATHER FACTS
+      ios_facts:
+        gather_subset:
+          - min
+          - interfaces
+
+    - name: HOST/IOS_VERSION/IP
+      debug:
+        msg: "{{ ansible_net_hostname }}-{{ ansible_net_version }}-{{ ansible_net_all_ipv4_addresses }}"
         msg: "TK resolves to ---  '{{ tac_key }}'  ---"
     - name: REMOVE LEGACY TACACS COMMAND
       ios_config:
