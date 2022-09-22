@@ -2,7 +2,6 @@
 switches
 routers
 
-
 [test_switches:children]
 testing
 
