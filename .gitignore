@@ -1,2 +1,3 @@
 
 !/playbooks/boot_system.yml
+!/inventory/group_vars/test_switches/vault
