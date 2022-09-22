@@ -1,6 +1,6 @@
 ---
 - name: TESTING MD5 COMPARISON OPERATOR
-  hosts: test_switch
+  hosts: test_switches
   connection: network_cli
   gather_facts: no
 

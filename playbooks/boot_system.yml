@@ -1,6 +1,6 @@
 ---
 - name: SET BOOT VARIABLE
-  hosts: test_switch
+  hosts: test_switches
   connection: network_cli
   gather_facts: no
 

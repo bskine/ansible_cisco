@@ -1,6 +1,6 @@
 ---
 - name: 3560CX IOS UPGRADE TO 15.2.7(E6)
-  hosts: test_switch
+  hosts: test_switches
   connection: network_cli
   gather_facts: no
 
