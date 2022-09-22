@@ -1,0 +1,36 @@
+---
+- name: REMOVE OLD-STYLE TACACS CONFIGURATION
+  hosts: test_switches
+  connection: network_cli
+  gather_facts: no
+
+  tasks:
+    - name: PRINT HOSTNAME
+      ios_facts:
+        gather_subset:
+          - '!config'
+          - '!hardware'
+
+    - name: Return model and ios version info
+      debug:
+        msg: "Host: {{ ansible_net_hostname }}, Version: {{ ansible_net_version }}, IP: {{ ansible_net_all_ipv4_addresses }}"
+
+    - name: TEST MATCHING
+      ios_command:
+        commands: 'sh run | i ^tacacs-server host'
+      register: tac_out
+
+    - set_fact:
+        oldtac1: "{{ tac_out.stdout_lines[0][0] }}"
+        oldtac2: "{{ tac_out.stdout_lines[0][1] }}"
+        oldtac3: "{{ tac_out.stdout_lines[0][2] }}"
+    - debug:
+        msg: "OLDTAC1 == '{{ oldtac1 }}'"
+
+    - name: REMOVE OLD TAC COMMANDS
+      cisco.ios.ios_config:
+        lines:
+          - no "{{ oldtac1 }}"
+          - no "{{ oldtac2 }}"
+          - no "{{ oldtac3 }}"
+      when: oldtac1 != " "
