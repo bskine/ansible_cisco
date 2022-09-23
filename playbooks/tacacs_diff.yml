@@ -20,50 +20,81 @@
         39616165623735666435646139323735623438643165353263386633306338373238
 
   tasks:
-    - name: GATHER FACTS
-      ios_facts:
-        gather_subset:
-          - min
-          - interfaces
+#    - name: GATHER FACTS
+#      ios_facts:
+#        gather_subset:
+#          - min
+#          - interfaces
 
     - name: HOST/IOS_VERSION/IP
       debug:
         msg: "{{ ansible_net_hostname }}-{{ ansible_net_version }}-{{ ansible_net_all_ipv4_addresses }}"
-        msg: "TK resolves to ---  '{{ tac_key }}'  ---"
-    - name: REMOVE LEGACY TACACS COMMAND
-      ios_config:
-        lines:
-          - no tacacs-server host 10.26.60.20
-          - no tacacs-server host 158.139.170.16
-          - no tacacs-server host 155.191.182.137
-        save_when: modified
-    - name: CONFIGURE TACACS SERVER-1
-      cisco.ios.ios_config:
-        lines:
-          - address ipv4 {{ tac1_ip }}
-          - "{{ tac_key }}"
-        parents: tacacs server {{ tac1_name }}
-        before: no tacacs server {{ tac1_name }}
-        match: exact
-        replace: block
-        save_when: modified
-    - name: CONFIGURE TACACS SERVER-2
-      cisco.ios.ios_config:
-        lines:
-          - address ipv4 {{ tac2_ip }}
-          - "{{ tac_key }}"
-        parents: tacacs server {{ tac2_name }}
-        before: no tacacs server {{ tac2_name }}
-        match: exact
-        replace: block
-        save_when: modified
-    - name: CONFIGURE TACACS SERVER-3
-      cisco.ios.ios_config:
-        lines:
-          - address ipv4 {{ tac3_ip }}
-          - "{{ tac_key }}"
-        parents: tacacs server {{ tac3_name }}
-        before: no tacacs server {{ tac3_name }}
-        match: exact
-        replace: block
-        save_when: modified
+
+    - name: TEST MATCHING
+      ios_command:
+        commands: 'sh run | i ^tacacs-server host'
+      register: tac_out
+
+    - name: REMOVE OLD TAC COMMANDS
+      block:
+        - set_fact:
+            oldtac1: "{{ tac_out.stdout_lines[0][0] }}"
+          when: tac_out.stdout_lines[0][0] is defined
+        - set_fact:
+            oldtac2: "{{ tac_out.stdout_lines[0][1] }}"
+          when: tac_out.stdout_lines[0][1] is search('tacacs-server host')
+        - set_fact:
+            oldtac3: "{{ tac_out.stdout_lines[0][2] }}"
+          when: tac_out.stdout_lines[0][2] is defined
+        - name: REMOVE SERVER 1 IF PRESENT
+          cisco.ios.ios_config:
+            lines: no {{ oldtac1 }}
+          when: oldtac1 is defined
+        - name: REMOVE SERVER 2 IF PRESENT
+          cisco.ios.ios_config:
+            lines: no {{ oldtac2 }}
+          when: oldtac2 is defined
+        - name: REMOVE SERVER 3 IF PRESENT
+          cisco.ios.ios_config:
+            lines: no {{ oldtac3 }}
+          when: oldtac3 is defined
+
+        - name: CONFIGURE TACACS SERVERS
+          block:
+            - name: CONFIGURE TACACS SERVER-1
+              cisco.ios.ios_config:
+                lines:
+                  - address ipv4 {{ tac1_ip }}
+                  - "{{ tac_key }}"
+                parents: tacacs server {{ tac1_name }}
+                before: no tacacs server {{ tac1_name }}
+                match: exact
+                replace: block
+                notify: "save_handler"
+            - name: CONFIGURE TACACS SERVER-2
+              cisco.ios.ios_config:
+                lines:
+                  - address ipv4 {{ tac2_ip }}
+                  - "{{ tac_key }}"
+                parents: tacacs server {{ tac2_name }}
+                before: no tacacs server {{ tac2_name }}
+                match: exact
+                replace: block
+                notify: "save_handler"
+            - name: CONFIGURE TACACS SERVER-3
+              cisco.ios.ios_config:
+                lines:
+                  - address ipv4 {{ tac3_ip }}
+                  - "{{ tac_key }}"
+                parents: tacacs server {{ tac3_name }}
+                before: no tacacs server {{ tac3_name }}
+                match: exact
+                replace: block
+                notify: "save_handler"
+      when: tac_out is search('tacacs-server host')
+    - handler:
+        - name: save_handler
+          ios_command:
+            commands: "write mem"
+            timeout: 40
+          when: not ansible_check_mode
