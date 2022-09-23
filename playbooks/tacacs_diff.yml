@@ -46,6 +46,9 @@
         - set_fact:
             oldtac3: "{{ tac_out.stdout_lines[0][2] }}"
           when: tac_out.stdout_lines[0][2] is defined
+        - name: REMOVE TACACS-SERVER KEY
+          cisco.ios.ios_config:
+            lines: no tacacs-server key
         - name: REMOVE SERVER 1 IF PRESENT
           cisco.ios.ios_config:
             lines: no {{ oldtac1 }}
@@ -70,7 +73,6 @@
                 before: no tacacs server {{ tac1_name }}
                 match: exact
                 replace: block
-                notify: "save_handler"
             - name: CONFIGURE TACACS SERVER-2
               cisco.ios.ios_config:
                 lines:
@@ -80,7 +82,6 @@
                 before: no tacacs server {{ tac2_name }}
                 match: exact
                 replace: block
-                notify: "save_handler"
             - name: CONFIGURE TACACS SERVER-3
               cisco.ios.ios_config:
                 lines:
@@ -90,7 +91,7 @@
                 before: no tacacs server {{ tac3_name }}
                 match: exact
                 replace: block
-                notify: "save_handler"
+                save_when: modified
       when: tac_out is search('tacacs-server host')
 
 #  handlers:
@@ -99,5 +100,3 @@
 #        commands: "write mem"
 #        timeout: 40
 #      when: not ansible_check_mode
-
-
