@@ -20,11 +20,11 @@
         39616165623735666435646139323735623438643165353263386633306338373238
 
   tasks:
-#    - name: GATHER FACTS
-#      ios_facts:
-#        gather_subset:
-#          - min
-#          - interfaces
+    - name: GATHER FACTS
+      ios_facts:
+        gather_subset:
+          - min
+          - interfaces
 
     - name: HOST/IOS_VERSION/IP
       debug:
@@ -92,9 +92,12 @@
                 replace: block
                 notify: "save_handler"
       when: tac_out is search('tacacs-server host')
-    - handler:
-        - name: save_handler
-          ios_command:
-            commands: "write mem"
-            timeout: 40
-          when: not ansible_check_mode
+
+#  handlers:
+#    - name: save_handler
+#      ios_command:
+#        commands: "write mem"
+#        timeout: 40
+#      when: not ansible_check_mode
+
+
