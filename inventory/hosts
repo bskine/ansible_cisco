@@ -71,8 +71,4 @@ alp-acf-l8-sw3 ansible_host=10.27.10.169
 alp-acf-l8-sw4 ansible_host=10.27.10.170
 
 [testing]
-ansible_host=10.27.10.170
-
-
-
-# alp-cd4-secstation-sw1 ansible_host=10.27.10.44
+alp-l7-sw4 ansible_host=10.27.10.165
