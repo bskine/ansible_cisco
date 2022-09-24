@@ -74,4 +74,6 @@ alp-h2-moto-sw1 ansible_host=10.27.12.190
 alp-h2-moto-sw2 ansible_host=10.27.12.191
 alp-erc-moto-sw1 ansible_host=10.27.12.194
 alp-h1-moto-sw1 ansible_host=10.27.12.192
-alp-h1-moto-sw1 ansible_host=10.27.10.96
+
+
+[standby]
