@@ -19,21 +19,21 @@
           - enable algo scrypt secret {{enable_secret_09_22}}
           - username tombstone priv 15 algo scrypt secret {{enable_secret_09_22}}
 
-    - name: CONFIGURE CONSOLE PASSWORD
+    - name: UPDATE CONSOLE PASSWORD
       cisco.ios.ios_config:
         lines:
           - "{{vty_password_09_22}}"
         parents: line con 0
         match: none
 
-    - name: CONFIGURE VTY 0 4 PASSWORD
+    - name: UPDATE VTY 0 4 PASSWORD
       cisco.ios.ios_config:
         lines:
           - "{{vty_password_09_22}}"
         parents: line vty 0 4
         match: none
 
-    - name: CONFIGURE VTY 5 15 PASSWORD
+    - name: UPDATE VTY 5 15 PASSWORD
       cisco.ios.ios_config:
         lines:
           - "{{vty_password_09_22}}"
