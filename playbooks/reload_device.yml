@@ -16,15 +16,14 @@
         msg: "{{ ansible_net_hostname }}-{{ ansible_net_version }}-{{ ansible_net_all_ipv4_addresses }}"
 
     - name: REBOOT SWITCH IF INSTRUCTED
-      ios_command:
-        commands:
-          commands: reload
-          prompt:
-            - 'Save? [yes/no]:'
-            - '\[confirm]\'
-          answer:
-            - "y"
-            - "\n"
+      cli_command:
+        commands: reload
+        prompt:
+          'Save? [yes/no]:'
+          '\[confirm]\'
+        answer:
+          "y"
+          "\n"
 
     - name: wait for network device to come back up
       wait_for_connection:
