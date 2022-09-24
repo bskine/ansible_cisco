@@ -1,0 +1,40 @@
+---
+- name: RELOAD DEVICE AND WAIT FOR REBIRTH
+  hosts: test_switches
+  connection: network_cli
+  gather_facts: false
+
+  tasks:
+    - name: GATHER FACTS
+      ios_facts:
+        gather_subset:
+          - min
+          - interfaces
+
+    - name: HOST/IOS_VERSION/IP
+      debug:
+        msg: "{{ ansible_net_hostname }}-{{ ansible_net_version }}-{{ ansible_net_all_ipv4_addresses }}"
+
+    - name: REBOOT SWITCH IF INSTRUCTED
+      ios_command:
+        commands:
+          commands: reload
+          prompt:
+            - 'Save? [yes/no]:'
+            - '\[confirm]\'
+          answer:
+            - "y"
+            - "\n"
+
+    - name: wait for network device to come back up
+      wait_for_connection:
+        delay: 10
+
+    - name: grab the uptime
+      cli_command:
+        command: show ver | i Uptime
+      register: uptime
+
+    - name: show uptime
+      debug:
+        msg: "{{uptime.stdout}}"

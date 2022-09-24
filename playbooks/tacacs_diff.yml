@@ -2,7 +2,7 @@
 - name: UPDATE TO NEW-STYLE TACACS CONFIGURATION
   hosts: test_switches
   connection: network_cli
-  gather_facts: no
+  gather_facts: false
 
   vars:
     - tac1_name: NSKISETACPSN
