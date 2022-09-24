@@ -5,30 +5,37 @@
   gather_facts: false
 
   tasks:
-    - name: GATHER FACTS
-      ios_facts:
-        gather_subset:
-          - min
-          - interfaces
-
-    - name: HOST/IOS_VERSION/IP
-      debug:
-        msg: "{{ ansible_net_hostname }}-{{ ansible_net_version }}-{{ ansible_net_all_ipv4_addresses }}"
+#    - name: GATHER FACTS
+#      ios_facts:
+#        gather_subset:
+#          - min
+#          - interfaces
+#
+#    - name: HOST/IOS_VERSION/IP
+#      debug:
+#        msg: "{{ ansible_net_hostname }}-{{ ansible_net_version }}-{{ ansible_net_all_ipv4_addresses }}"
 
     - name: REBOOT SWITCH IF INSTRUCTED
       cli_command:
         command: reload
-        check_all: True
-        prompt:
-          - 'System configuration'
-          - '\[confirm]\'
-        answer:
-          - "y"
-          - "\n"
+      register: output
+
+    - name: SAVE IF NECESSARY
+      cli_command:
+        command: 'y'
+      when: output is search(' Save? [yes/no]:')
+
+    - name: CONFIRM REBOOT
+      cli_command:
+        command: '\n'
+      when: output is search('confirm')
 
     - name: wait for network device to come back up
       wait_for_connection:
         delay: 10
+
+    - name: reset the connection
+      meta: reset_connection
 
     - name: grab the uptime
       cli_command:
