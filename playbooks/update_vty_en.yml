@@ -1,0 +1,16 @@
+---
+- name: 3560CX IOS UPGRADE TO 15.2.7(E6)
+  hosts: test_switches
+  connection: network_cli
+  gather_facts: false
+
+  tasks:
+    - name: UPDATE ENABLE SECRET
+      ios_config:
+        lines:
+          - enable algo scrypt secret {{enable_secret_09_22}}
+          - username tombstone priv 15 algo scrypt secret {{enable_secret_09_22}}
+      register: output
+
+    - debug:
+        var: output
