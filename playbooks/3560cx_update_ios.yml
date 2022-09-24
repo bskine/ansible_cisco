@@ -22,6 +22,11 @@
        39616165623735666435646139323735623438643165353263386633306338373238
 
   tasks:
+    - name: TEST MATCHING
+      ios_command:
+        commands: 'sh run | i ^tacacs-server host'
+      register: tac_out
+      
     - name: REMOVE OLD TAC COMMANDS
       block:
         - set_fact:
