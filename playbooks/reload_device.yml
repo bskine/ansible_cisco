@@ -6,7 +6,7 @@
 
   tasks:
     - name: WRITE TO STARTUP_CONFIG
-      ios command:
+      ios_command:
         command: 'write memory'
 
     - name: REBOOT SWITCH IF INSTRUCTED
