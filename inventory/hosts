@@ -1,6 +1,7 @@
-[hosts:children]
+[all:children]
 switches
 routers
+test_switches
 
 [test_switches:children]
 testing
