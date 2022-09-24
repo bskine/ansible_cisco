@@ -128,10 +128,4 @@
     - name: GATHER FACTS
       ios_facts:
         gather_subset:
-
-    - name: ASSERT THAT THE IOS VERSION IS CORRECT
-      assert:
-        that:
-          - "flash:{{new_ios_bin}} == {{ansible_net_image}}"
-        msg: "{{ansible_net_hostname}} has been upgraded to {{new_ios_bin}}"
 ...
