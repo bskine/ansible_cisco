@@ -8,6 +8,7 @@
     - tac1_name: DUMMYLOAD
     - tac1_ip: 1.1.1.1
 
+  tasks:
     - name: CONFIGURE TACACS SERVERS
       block:
         - name: CONFIGURE TACACS SERVER-1
