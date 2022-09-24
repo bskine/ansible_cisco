@@ -7,11 +7,11 @@
   tasks:
     - name: WRITE TO STARTUP_CONFIG
       ios_command:
-        command: 'write memory'
+        commands: 'write memory'
 
     - name: REBOOT SWITCH IF INSTRUCTED
       cli_command:
-        commands: reload
+        command: reload
         prompt: '\[confirm\]'
         answer: "\r"
 
