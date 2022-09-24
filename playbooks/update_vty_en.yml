@@ -1,5 +1,5 @@
 ---
-- name: 3560CX IOS UPGRADE TO 15.2.7(E6)
+- name: UPDATE VTY/EN PASSWORDS
   hosts: test_switches
   connection: network_cli
   gather_facts: false
@@ -19,14 +19,14 @@
         parents: line con 0
         match: none
 
-    - name: CONFIGURE CONSOLE PASSWORD
+    - name: CONFIGURE VTY 0 4 PASSWORD
       cisco.ios.ios_config:
         lines:
           - "{{vty_password_09_22}}"
         parents: line vty 0 4
         match: none
 
-    - name: CONFIGURE CONSOLE PASSWORD
+    - name: CONFIGURE VTY 5 15 PASSWORD
       cisco.ios.ios_config:
         lines:
           - "{{vty_password_09_22}}"
