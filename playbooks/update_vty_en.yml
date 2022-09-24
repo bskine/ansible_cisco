@@ -12,5 +12,23 @@
           - username tombstone priv 15 algo scrypt secret {{enable_secret_09_22}}
       register: output
 
-    - debug:
-        var: output
+    - name: CONFIGURE CONSOLE PASSWORD
+      cisco.ios.ios_config:
+        lines:
+          - "{{vty_password_09_22}}"
+        parents: line con 0
+        match: none
+
+    - name: CONFIGURE CONSOLE PASSWORD
+      cisco.ios.ios_config:
+        lines:
+          - "{{vty_password_09_22}}"
+        parents: line vty 0 4
+        match: none
+
+    - name: CONFIGURE CONSOLE PASSWORD
+      cisco.ios.ios_config:
+        lines:
+          - "{{vty_password_09_22}}"
+        parents: line vty 5 15
+        match: none
