@@ -16,26 +16,28 @@
 #        msg: "{{ ansible_net_hostname }}-{{ ansible_net_version }}-{{ ansible_net_all_ipv4_addresses }}"
 
     - name: REBOOT SWITCH IF INSTRUCTED
-      cli_command:
-        command: reload
-      register: output
+      block:
+        - name: ISSUE COMMAND
+          cli_command:
+            command: reload
+          register: output
 
-    - name: SAVE IF NECESSARY
-      cli_command:
-        command: 'y'
-      when: output is search(' Save? [yes/no]:')
+        - name: SAVE IF NECESSARY
+          cli_command:
+            command: 'y'
+          when: output is search(' Save? [yes/no]:')
 
-    - name: CONFIRM REBOOT
-      cli_command:
-        command: '\n'
-      when: output is search('confirm')
+        - name: CONFIRM REBOOT
+          cli_command:
+            command: '\n'
+          when: output is search('confirm')
+
+    - name: reset the connection
+      meta: reset_connection
 
     - name: wait for network device to come back up
       wait_for_connection:
         delay: 10
-
-    - name: reset the connection
-      meta: reset_connection
 
     - name: grab the uptime
       cli_command:
