@@ -11,7 +11,7 @@
 
     - name: REBOOT SWITCH IF INSTRUCTED
       cli_command:
-        command: reload
+        commands: reload
         prompt: '\[confirm\]'
         answer: "\r"
 
