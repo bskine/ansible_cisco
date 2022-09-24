@@ -13,6 +13,7 @@
         lines: boot system flash:{{ new_ios_bin }}
         match: line
       register: output
+      save_when: always
     - debug:
         var: output
 
@@ -20,5 +21,5 @@
       cisco.ios.ios_config:
         save_when: modified
 
-# TODO move save_when into - name: SETTING BOOT IMAGE
+
 # TODO match: line or none
