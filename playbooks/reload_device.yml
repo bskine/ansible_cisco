@@ -15,22 +15,15 @@
 #      debug:
 #        msg: "{{ ansible_net_hostname }}-{{ ansible_net_version }}-{{ ansible_net_all_ipv4_addresses }}"
 
+    - name: WRITE TO STARTUP_CONFIG
+      ios command:
+        command: 'write memory'
+
     - name: REBOOT SWITCH IF INSTRUCTED
       cli_command:
         command: reload
-      register: output
-
-    - name: PROMPTS
-      block:
-        - name: SAVE IF NECESSARY
-          cli_command:
-            command: 'y'
-          when: output is search(' Save? [yes/no]:')
-
-        - name: CONFIRM REBOOT
-          cli_command:
-            command: '\n'
-          when: output is search('confirm')
+        prompt: '\[confirm\]'
+        answer: "\r"
 
     - name: reset the connection
       meta: reset_connection
