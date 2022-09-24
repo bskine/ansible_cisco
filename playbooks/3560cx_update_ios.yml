@@ -41,20 +41,20 @@
         - name: REMOVE TACACS-SERVER KEY
           cisco.ios.ios_config:
             lines: no tacacs-server key
-        - name: REMOVE SERVER 1 IF PRESENT
+        - name: REMOVE TACACS-SERVER-1 IF PRESENT
           cisco.ios.ios_config:
             lines: no {{ oldtac1 }}
           when: oldtac1 is defined
-        - name: REMOVE SERVER 2 IF PRESENT
+        - name: REMOVE TACACS-SERVER-2 IF PRESENT
           cisco.ios.ios_config:
             lines: no {{ oldtac2 }}
           when: oldtac2 is defined
-        - name: REMOVE SERVER 3 IF PRESENT
+        - name: REMOVE TACACS-SERVER-3 IF PRESENT
           cisco.ios.ios_config:
             lines: no {{ oldtac3 }}
           when: oldtac3 is defined
 
-        - name: CONFIGURE TACACS SERVERS
+        - name: CONFIGURE NEW-STYLE TACACS CONFIGURATION IF NEEDED
           block:
             - name: CONFIGURE TACACS SERVER-1
               cisco.ios.ios_config:
@@ -86,7 +86,7 @@
                 save_when: modified
       when: tac_out is search('tacacs-server host')
 
-    - name: COPY OVER IOS IMAGE
+    - name: COPY IOS IMAGE TO FLASH
       ios_command:
         commands:
           - command: 'copy tftp://10.27.18.14/{{ new_ios_bin }} flash:'
@@ -103,17 +103,13 @@
         retries: 1
       vars:
         ansible_command_timeout: 140
-    - debug:
-        msg: "Md5 Verified!"
 
-    - name: CONTINUE UPGRADE IF MD5 HASH MATCHES
-      block:
-      - name: SETTING BOOT IMAGE
-        cisco.ios.ios_config:
-          lines:
-          - boot system flash:{{ new_ios_bin }}
-          match: none
-          save_when: always
+    - name: SETTING BOOT IMAGE
+      cisco.ios.ios_config:
+        lines:
+        - boot system flash:{{ new_ios_bin }}
+        match: none
+        save_when: always
 
     - name: ISSUE RELOAD COMMAND
       cli_command:
@@ -143,6 +139,6 @@
     - name: ASSERT THAT THE IOS VERSION IS CORRECT
       assert:
         that:
-          - "{{new_ios_bin}} == {{ansible_net_version}}"
+          - "flash:{{new_ios_bin}} == {{ansible_net_image}}"
         msg: "{{ansible_net_hostname}} has been upgraded to {{new_ios_bin}}"
 ...
