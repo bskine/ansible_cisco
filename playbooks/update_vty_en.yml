@@ -10,6 +10,7 @@
         lines:
           - enable algo scrypt secret {{enable_secret_09_22}}
           - username tombstone priv 15 algo scrypt secret {{enable_secret_09_22}}
+      check_mode: True
       register: output
 
     - debug:
