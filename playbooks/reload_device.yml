@@ -19,11 +19,11 @@
       cli_command:
         commands: reload
         prompt:
-          'Save? [yes/no]:'
-          '\[confirm]\'
+          - 'Save? [yes/no]:'
+          - '\[confirm]\'
         answer:
-          "y"
-          "\n"
+          - "y"
+          - "\n"
 
     - name: wait for network device to come back up
       wait_for_connection:
