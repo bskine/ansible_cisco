@@ -1,0 +1,20 @@
+---
+- name: UPDATE TO NEW-STYLE TACACS CONFIGURATION
+  hosts: test_switches
+  connection: network_cli
+  gather_facts: false
+
+  vars:
+    - tac1_name: DUMMYLOAD
+    - tac1_ip: 1.1.1.1
+
+    - name: CONFIGURE TACACS SERVERS
+      block:
+        - name: CONFIGURE TACACS SERVER-1
+          cisco.ios.ios_config:
+            lines:
+              - address ipv4 {{ tac1_ip }}
+              - "{{ tac_key }}"
+            parents: tacacs server {{ tac1_name }}
+            match: exact
+            replace: block
