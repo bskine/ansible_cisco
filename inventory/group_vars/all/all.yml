@@ -3,6 +3,8 @@
 ansible_network_os: ios
 ansible_connection: network_cli
 ansible_user: boynt_p
+
+# ansible-vault encrypt_string 'underscore_pass' --name ansible_password
 ansible_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           63343838323665376232653265303430313963663330316165386436313435386337306164383464
@@ -19,7 +21,7 @@ tac_key: !vault |
   6465643633343664350a376261343866613466303038623636333339633830646533333736393533
   39616165623735666435646139323735623438643165353263386633306338373238
 
-#ansible-vault encrypt_string 'sEcret' --name enable_secret_09_22
+# ansible-vault encrypt_string 'sEcret' --name enable_secret_09_22
 enable_secret_09_22: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           38366638626230353166616235336335346236373037346265633133323262336433346262666664
