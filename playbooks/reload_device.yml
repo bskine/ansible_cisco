@@ -18,8 +18,9 @@
     - name: REBOOT SWITCH IF INSTRUCTED
       cli_command:
         command: reload
+        check_all: True
         prompt:
-          - 'Save'
+          - 'System configuration'
           - '\[confirm]\'
         answer:
           - "y"
