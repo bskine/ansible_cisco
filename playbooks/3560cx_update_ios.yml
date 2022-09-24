@@ -139,5 +139,5 @@
       assert:
         that:
           - {{new_ios_bin}} == {{ansible_net_version}}
-        msg: "IOS version does not match compliant version. Upgrade unsuccessful."
+        msg: "{{ansible_net_hostname}} has been upgraded to {{new_ios_bin}}"
 ...
