@@ -3,9 +3,6 @@ switches
 routers
 test_switches
 
-[test_switches:children]
-testing
-
 [routers:children]
 e6_routers
 rig_routers
@@ -71,6 +68,6 @@ alp-acf-l8-sw2 ansible_host=10.27.10.168
 alp-acf-l8-sw3 ansible_host=10.27.10.169
 alp-acf-l8-sw4 ansible_host=10.27.10.170
 
-[testing]
+[test_switches]
 alp-acf-l8-sw4 ansible_host=10.27.10.170
 
