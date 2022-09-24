@@ -87,6 +87,9 @@ alp-h2-moto-sw2 ansible_host=10.27.12.191
 alp-h1-moto-sw1 ansible_host=10.27.12.192
 alp-k4-moto-sw1 ansible_host=10.27.12.193
 alp-erc-moto-sw1 ansible_host=10.27.12.194
+alp-l6-moto-sw1 ansible_host=10.27.12.195
+alp-atac-moto-sw1 ansible_host=10.27.12.196
+alp-e3-moto-sw1 ansible_host=10.27.12.197
 ##################################################
 
 [test_switches]
