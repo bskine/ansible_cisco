@@ -138,6 +138,6 @@
     - name: ASSERT THAT THE IOS VERSION IS CORRECT
       assert:
         that:
-          - {{new_ios_bin}} == {{ansible_net_version}}
+          - "{{new_ios_bin}} == {{ansible_net_version}}"
         msg: "{{ansible_net_hostname}} has been upgraded to {{new_ios_bin}}"
 ...
