@@ -5,16 +5,6 @@
   gather_facts: false
 
   tasks:
-#    - name: GATHER FACTS
-#      ios_facts:
-#        gather_subset:
-#          - min
-#          - interfaces
-#
-#    - name: HOST/IOS_VERSION/IP
-#      debug:
-#        msg: "{{ ansible_net_hostname }}-{{ ansible_net_version }}-{{ ansible_net_all_ipv4_addresses }}"
-
     - name: WRITE TO STARTUP_CONFIG
       ios command:
         command: 'write memory'
