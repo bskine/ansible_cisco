@@ -16,12 +16,12 @@
 #        msg: "{{ ansible_net_hostname }}-{{ ansible_net_version }}-{{ ansible_net_all_ipv4_addresses }}"
 
     - name: REBOOT SWITCH IF INSTRUCTED
-      block:
-        - name: ISSUE COMMAND
-          cli_command:
-            command: reload
-          register: output
+      cli_command:
+        command: reload
+      register: output
 
+    - name: PROMPTS
+      block:
         - name: SAVE IF NECESSARY
           cli_command:
             command: 'y'
