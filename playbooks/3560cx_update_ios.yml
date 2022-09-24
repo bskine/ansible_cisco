@@ -5,7 +5,6 @@
   gather_facts: false
 
   vars:
-   - compliant_ios_version: c3560cx-universalk9-mz.152-7.E6.bin
    - new_ios_bin: c3560cx-universalk9-mz.152-7.E6.bin
    - new_ios_md5: 1d3c6f78f7df594ae4bdd9faa16ee6de
    - tac1_name: NSKISETACPSN
@@ -21,10 +20,6 @@
        36343265313266306636333632313933363733303133613137393864616631363865313462636432
        6465643633343664350a376261343866613466303038623636333339633830646533333736393533
        39616165623735666435646139323735623438643165353263386633306338373238
-  vars_prompt:
-   - name: "reboot?"
-     prompt: "Do you want Ansible to reboot the hosts?(y/n)"
-     private: no
 
   tasks:
     - name: REMOVE OLD TAC COMMANDS
@@ -86,70 +81,63 @@
                 save_when: modified
       when: tac_out is search('tacacs-server host')
 
-    - name: TFTP IMAGE
+    - name: COPY OVER IOS IMAGE
+      ios_command:
+        commands:
+          - command: 'copy tftp://10.27.18.14/{{ new_ios_bin }} flash:'
+            prompt: 'Destination filename \[{{ new_ios_bin }}\]?'
+            answer: "\r"
+      vars:
+        ansible_command_timeout: 600
+
+    - name: VERIFY MD5
+      ios_command:
+        commands:
+          - "verify /md5 flash:{{ new_ios_bin }}"
+        wait_for: result[0] contains "{{ new_ios_md5 }}"
+        retries: 1
+      vars:
+        ansible_command_timeout: 140
+    - debug:
+        msg: "Md5 Verified!"
+
+    - name: CONTINUE UPGRADE IF MD5 HASH MATCHES
       block:
-      - name: COPY OVER IOS IMAGE
-        ios_command:
-          commands:
-            - command: 'copy tftp://10.27.18.14/{{ new_ios_bin }} flash:'
-              prompt: 'Destination filename \[{{ new_ios_bin }}\]?'
-              answer: "\r"
-        vars:
-          ansible_command_timeout: 600
+      - name: SETTING BOOT IMAGE
+        cisco.ios.ios_config:
+          lines:
+          - boot system flash:{{ new_ios_bin }}
+          match: none
+          save_when: always
 
-      - name: VERIFY MD5
-        ios_command:
-          commands:
-            - "verify /md5 flash:{{ new_ios_bin }}"
-          wait_for: result[0] contains "{{ new_ios_md5 }}"
-          retries: 1
-        vars:
-          ansible_command_timeout: 140
-      - debug:
-          msg: "Md5 Verified!"
+    - name: ISSUE RELOAD COMMAND
+      cli_command:
+        command: reload
+        prompt: '\[confirm\]'
+        answer: "\r"
 
-      - name: CONTINUE UPGRADE IF MD5 HASH MATCHES
-        block:
-        - name: SETTING BOOT IMAGE
-          cisco.ios.ios_config:
-            lines:
-            - boot system flash:{{ new_ios_bin }}
-            match: none
-            save_when: modified
+    - name: BREAK CONNECTION FOR IMDEMPOTENCY
+      meta: reset_connection
 
-        - name: REBOOT SWITCH IF INSTRUCTED
-          block:
-          - name: REBOOT SWITCH
-            ios_command:
-               commands:
-                  - command: "reload"
-                    prompt:
-                      - 'Save? [yes/no]:'
-                      - '\[confirm]\'
-                    answer:
-                      - "y"
-                      - "\n"
-            vars:
-              ansible_command_timeout: 30
+    - name: WAIT FOR LIFE
+      wait_for_connection:
+        delay: 10
 
-          - name: WAIT FOR SWITCH TO RETURN
-            wait_for:
-              host: "{{inventory_hostname}}"
-              port: 22
-              delay: 60
-              timeout: 600
-            delegate_to: localhost
+    - name: UPTIME CONFIRMATION
+      cli_command:
+        command: show ver | i .ptime
+      register: uptime
 
-          - name: GATHER ROUTER FACTS FOR VERIFICATION
-            ios_facts:
+    - debug:
+        msg: "{{uptime.stdout}}"
 
-          - name: ASSERT THAT THE IOS VERSION IS CORRECT
-            assert:
-              that:
-                - compliant_ios_version == ansible_net_version
-              msg: "IOS version does not match compliant version. Upgrade unsuccessful."
-          when: should_reboot == "y"
-        when: {{ new_ios_md5 }} in md5_result.stdout[0]
+    - name: GATHER FACTS
+      ios_facts:
+        gather_subset:
 
-      when: ansible_net_version != compliant_ios_version
+    - name: ASSERT THAT THE IOS VERSION IS CORRECT
+      assert:
+        that:
+          - {{new_ios_bin}} == {{ansible_net_version}}
+        msg: "IOS version does not match compliant version. Upgrade unsuccessful."
 ...

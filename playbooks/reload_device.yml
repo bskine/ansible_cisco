@@ -9,24 +9,23 @@
       ios_command:
         commands: 'write memory'
 
-    - name: REBOOT SWITCH IF INSTRUCTED
+    - name: ISSUE RELOAD COMMAND
       cli_command:
         command: reload
         prompt: '\[confirm\]'
         answer: "\r"
 
-    - name: reset the connection
+    - name: BREAK CONNECTION FOR IMDEMPOTENCY
       meta: reset_connection
 
-    - name: wait for network device to come back up
+    - name: WAIT FOR LIFE
       wait_for_connection:
         delay: 10
 
-    - name: grab the uptime
+    - name: UPTIME CONFIRMATION
       cli_command:
-        command: show ver | i Uptime
+        command: show ver | i .ptime
       register: uptime
 
-    - name: show uptime
-      debug:
+    - debug:
         msg: "{{uptime.stdout}}"
