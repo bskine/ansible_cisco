@@ -19,7 +19,7 @@
       cli_command:
         command: reload
         prompt:
-          - 'Save? [yes/no]:'
+          - 'Save\? [yes/no]:'
           - '\[confirm]\'
         answer:
           - "y"
