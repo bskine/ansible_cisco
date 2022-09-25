@@ -124,8 +124,4 @@
 
     - debug:
         msg: "{{uptime.stdout}}"
-
-    - name: GATHER FACTS
-      ios_facts:
-        gather_subset:
 ...
