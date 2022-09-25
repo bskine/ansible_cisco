@@ -123,7 +123,7 @@ alp-e3-moto-sw1 ansible_host=10.27.12.197
 ##################################################
 
 [test_switches]
-alp-aec-kpad-sw9 ansible_host=10.27.12.89
+alp-aec-kpad-sw13 ansible_host=10.27.12.93
 
 
 
