@@ -8,7 +8,7 @@
 ################################################################
 
 - name: UPDATE VTY/EN PASSWORDS
-  hosts: d26
+  hosts: test_switches
   connection: network_cli
   gather_facts: false
 

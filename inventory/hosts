@@ -37,13 +37,15 @@ alp-cd5-moto-rtr1 ansible_host=10.27.12.218
 alp-acon1-moto-rtr1 ansible_host=10.27.12.221	
 alp-acon2-moto-rtr1 ansible_host=10.27.12.222	
 alp-mt6-moto-rtr1 ansible_host=10.27.12.227	
-alp-mt7-moto-rtr1 ansible_host=10.27.12.228	
+alp-mt7-moto-rtr1 ansible_host=10.27.12.228
+alp-ex3-moto-rtr1 ansible_host=10.27.12.229
 ##################################################
 
 ##################################################
 [switches:children]
 ewing
 rig_switches
+kpad_switches
 
 [rig_switches:children]
 d25
@@ -69,6 +71,34 @@ alp-d26-shop-sw1 ansible_host=10.27.126.6
 alp-d26-tankfarm-sw1 ansible_host=10.27.126.7	
 alp-d26-site_control-sw1 ansible_host=10.27.126.8	
 
+[kpad_switches]
+alp-kpad-reim-sw1 ansible_host=10.27.12.78
+alp-kpad-reim-sw2 ansible_host=10.27.12.79
+alp-kpad-plant-sw1 ansible_host=10.27.12.80
+alp-kapd-aec-sw1 ansible_host=10.27.12.81
+alp-kapd-aec-sw2 ansible_host=10.27.12.82
+alp-kapd-aec-sw3 ansible_host=10.27.12.83
+alp-kapd-aec-sw4 ansible_host=10.27.12.84
+# alp-kapd-aec-sw5 ansible_host=10.27.12.85
+# alp-kapd-aec-sw6 ansible_host=10.27.12.86
+# alp-kapd-aec-sw7 ansible_host=10.27.12.87
+# alp-kapd-aec-sw8 ansible_host=10.27.12.88
+alp-kapd-aec-sw9 ansible_host=10.27.12.89
+alp-kapd-aec-sw10 ansible_host=10.27.12.90
+alp-kapd-aec-sw11 ansible_host=10.27.12.91
+alp-kapd-aec-sw12 ansible_host=10.27.12.92
+alp-kpad-aec-sw13 ansible_host=10.27.12.93
+alp-kpad-aec-sw14 ansible_host=10.27.12.94
+alp-kpad-aec-sw15 ansible_host=10.27.12.95
+alp-kpad-aec-sw16 ansible_host=10.27.12.96
+alp-kpad-aec-sw17 ansible_host=10.27.12.97
+alp-kpad-aec-sw18 ansible_host=10.27.12.98
+alp-kpad-tent-sw1 ansible_host=10.27.12.99
+alp-kpad-aec-sw19 ansible_host=10.27.12.100
+
+
+
+
 [ewing]
 alp-acf-l8-sw1 ansible_host=10.27.10.167
 alp-acf-l8-sw2 ansible_host=10.27.10.168
@@ -93,8 +123,8 @@ alp-e3-moto-sw1 ansible_host=10.27.12.197
 ##################################################
 
 [test_switches]
-alp-d25-ballmill-sw1 ansible_host=10.27.125.9
-alp-d25-aes-sw1 ansible_host=10.27.125.10
+alp-aec-kpad-sw9 ansible_host=10.27.12.89
+
 
 
 
