@@ -93,12 +93,8 @@ alp-e3-moto-sw1 ansible_host=10.27.12.197
 ##################################################
 
 [test_switches]
-alp-cd2-moto-sw1 ansible_host=10.27.12.182
-alp-cd3-moto-sw2 ansible_host=10.27.12.183
-alp-cd4-moto-sw1 ansible_host=10.27.12.184
-alp-cd5-moto-sw1 ansible_host=10.27.12.185
-alp-mt6-moto-sw1 ansible_host=10.27.12.186
-alp-mt7-moto-sw1 ansible_host=10.27.12.187
+alp-d25-ballmill-sw1 ansible_host=10.27.125.9
+alp-d25-aes-sw1 ansible_host=10.27.125.10
 
 
 
