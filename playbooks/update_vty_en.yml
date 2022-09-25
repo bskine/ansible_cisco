@@ -8,7 +8,7 @@
 ################################################################
 
 - name: UPDATE VTY/EN PASSWORDS
-  hosts: moto_routers
+  hosts: test_switches
   connection: network_cli
   gather_facts: false
 
@@ -39,4 +39,7 @@
           - "{{vty_password_09_22}}"
         parents: line vty 5 15
         match: none
+
+    - name: SAVE TO STARTING-CONFIG
+      ios_config:
         save_when: modified
